@@ -8,5 +8,6 @@ def sum_list(numbers):
     Returns:
         The sum of all numbers in the list, or 0 if the list is empty
     """
-    # TODO: Implement this function
-    pass 
+    if not numbers:
+        return 0
+    return sum(numbers) 
