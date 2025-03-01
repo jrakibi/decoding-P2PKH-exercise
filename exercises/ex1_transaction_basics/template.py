@@ -16,45 +16,52 @@ def varint(n: int) -> bytes:
     else:
         return b'\xff' + n.to_bytes(8, 'little')
 
-# TODO: Implement this function
 def create_input(
     txid: str,
     vout: int,
     script_sig: bytes = b'',
     sequence: bytes = b'\xff\xff\xff\xff'
 ) -> bytes:
-    """
-    Create a transaction input.
+    """Create a transaction input"""
+    # Convert txid from hex string and reverse (to little-endian)
+    txid_bytes = bytes.fromhex(txid)[::-1]
     
-    Args:
-        txid: Transaction ID as a hex string
-        vout: Output index to spend
-        script_sig: Script that satisfies spending conditions
-        sequence: Sequence number (default: 0xffffffff)
-        
-    Returns:
-        Serialized transaction input
-    """
-    # Your implementation here
-    pass
+    # Convert vout to 4 bytes, little-endian
+    vout_bytes = int_to_little_endian(vout, 4)
+    
+    # Script length and script
+    script_sig_length = varint(len(script_sig))
+    
+    return (
+        txid_bytes +           # 32 bytes
+        vout_bytes +          # 4 bytes
+        script_sig_length +   # 1 byte
+        script_sig +          # variable
+        sequence              # 4 bytes
+    )
 
-# TODO: Implement this function
 def create_output(
     amount: int,
     script_pubkey: bytes
 ) -> bytes:
-    """
-    Create a transaction output.
+    """Create a transaction output"""
+    # Amount (8 bytes, little-endian)
+    amount_bytes = int_to_little_endian(amount, 8)
     
-    Args:
-        amount: Value in satoshis
-        script_pubkey: Script that sets spending conditions
-        
-    Returns:
-        Serialized transaction output
-    """
-    # Your implementation here
-    pass
+    # Script length
+    script_pubkey_length = varint(len(script_pubkey))
+    
+    # Output structure:
+    # 1. Amount (8 bytes)
+    # 2. Script length (varint)
+    # 3. ScriptPubKey
+    output_bytes = (
+        amount_bytes +          # value in satoshis
+        script_pubkey_length +  # script length
+        script_pubkey           # actual script
+    )
+    
+    return output_bytes
 
 def create_basic_tx(
     version: int,
