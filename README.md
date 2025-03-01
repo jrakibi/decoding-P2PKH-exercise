@@ -1,42 +1,44 @@
-# Programming Exercise Autograding
+# Bitcoin Transaction Signing Exercise
 
-This repository contains programming exercises that will be automatically graded using GitHub Classroom's autograding feature.
+This exercise focuses on implementing key components of Bitcoin transaction creation and signing, with emphasis on SegWit transactions following the BIP143 standard.
 
-## How It Works
+## Background
 
-1. Students fork this repository through GitHub Classroom
-2. Students complete the exercises in their fork
-3. When students push their code, GitHub Actions will automatically run tests to verify the solution
-4. Students receive immediate feedback on their submission
+Bitcoin transactions consist of inputs (previous transaction outputs being spent) and outputs (new UTXOs being created). Segwit (Segregated Witness) transactions separate signature data from transaction data to improve scalability.
 
-## Exercise Structure
+BIP143 introduced a new signature verification scheme for SegWit transactions that fixes transaction malleability issues and enables more efficient verification.
 
-Each exercise is contained in its own directory with the following structure:
-- `exercise.md` - Instructions for the exercise
-- `template.py` - Starter code that students will modify
-- `test_solution.py` - Tests that will be run against the student's solution
+## Getting Started
 
-## Available Exercises
+1. Install the required dependency:
 
-1. **Function Implementation** - Complete a function according to specifications
-2. **Algorithm Challenge** - Implement an algorithm to solve a specific problem
-3. **Debugging Exercise** - Fix bugs in existing code
+```bash
+pip install ecdsa
+```
 
-## For Students
+2. Complete the implementation in `exercises/bitcoin_tx/template.py`
 
-To complete these exercises:
-1. Read the instructions in the exercise.md file
-2. Modify the template.py file according to the instructions
-3. Commit and push your changes
-4. Check the "Actions" tab in your GitHub repository to see if your solution passes the tests
+## Tasks
 
-## For Instructors
+Implement the following functions:
 
-To add new exercises:
-1. Create a new directory for your exercise
-2. Add the exercise files (instructions, template, tests)
-3. Update the GitHub Actions workflow to include your new tests
+1. `sign(private_key, commitment)`: Sign a transaction digest with a private key following Bitcoin's signature requirements
+   - Create a deterministic signature (RFC 6979)
+   - Ensure the signature uses low-S values (BIP62)
+   - Append the SIGHASH_ALL byte
 
-## Setup
+2. `get_p2wpkh_witness(priv, msg)`: Create a proper witness stack for a P2WPKH input
+   - Format: [num_items][sig_len][signature][pubkey_len][pubkey]
 
-This repository uses GitHub Actions for autograding. The configuration can be found in the `.github/workflows` directory.
+3. `assemble_transaction(inputs, outputs, witnesses)`: Assemble the final SegWit transaction
+   - Include version, marker, flag, inputs, outputs, witness data, and locktime
+
+## Testing
+
+Your implementation will be tested against known test vectors from BIP143 to ensure compatibility with the Bitcoin protocol.
+
+## Important Notes
+
+- Pay attention to byte ordering (little-endian vs big-endian)
+- The signature must follow strict DER encoding rules
+- For BIP62 compliance, if s > n/2, use n-s instead (where n is the curve order)
