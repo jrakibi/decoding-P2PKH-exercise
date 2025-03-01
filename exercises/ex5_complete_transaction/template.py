@@ -16,7 +16,6 @@ def varint(n: int) -> bytes:
     else:
         return b'\xff' + n.to_bytes(8, 'little')
 
-# TODO: Implement this function
 def assemble_transaction(
     version: int,
     inputs: List[bytes],
@@ -37,5 +36,38 @@ def assemble_transaction(
     Returns:
         Complete serialized SegWit transaction
     """
-    # Your implementation here
-    pass 
+    # 4-byte version in little-endian
+    tx_version = int_to_little_endian(version, 4)
+    
+    # Marker and flag for SegWit
+    marker_flag = b'\x00\x01'
+    
+    # Number of inputs (varint)
+    in_count = varint(len(inputs))
+    
+    # Serialize inputs
+    serialized_inputs = b''.join(inputs)
+    
+    # Number of outputs (varint)
+    out_count = varint(len(outputs))
+    
+    # Serialize outputs
+    serialized_outputs = b''.join(outputs)
+    
+    # Serialize witness data
+    serialized_witnesses = b''.join(witnesses)
+    
+    # Locktime (4 bytes)
+    tx_locktime = int_to_little_endian(locktime, 4)
+    
+    # Combine all components
+    return (
+        tx_version +
+        marker_flag +
+        in_count +
+        serialized_inputs +
+        out_count +
+        serialized_outputs +
+        serialized_witnesses +
+        tx_locktime
+    ) 

@@ -56,34 +56,33 @@ def create_output(
     
     return output_bytes
 
-# TODO: Implement this function
 def dsha256(data: bytes) -> bytes:
-    """
-    Double SHA256 hash.
-    
-    Args:
-        data: Data to hash
-        
-    Returns:
-        Double SHA256 hash: SHA256(SHA256(data))
-    """
-    # Your implementation here
-    pass
+    """Double SHA256 hash"""
+    return hashlib.sha256(hashlib.sha256(data).digest()).digest()
 
-# TODO: Implement this function
 def get_transaction_digest(
     inputs: List[bytes],
     outputs: List[bytes]
 ) -> tuple[bytes, bytes, bytes]:
     """
     Calculate BIP143 transaction digest components.
-    
-    Args:
-        inputs: List of serialized inputs
-        outputs: List of serialized outputs
-        
-    Returns:
-        Tuple of (hashPrevouts, hashSequence, hashOutputs)
+    Returns (hashPrevouts, hashSequence, hashOutputs)
     """
-    # Your implementation here
-    pass 
+    # For hashPrevouts: concatenate all outpoints (txid + vout)
+    outpoints = b''
+    sequences = b''
+    for tx_input in inputs:
+        outpoints += tx_input[:36]  # first 36 bytes are outpoint (txid + vout)
+        sequences += tx_input[-4:]   # last 4 bytes are sequence
+
+    # Calculate hashPrevouts
+    hash_prevouts = dsha256(outpoints)
+
+    # Calculate hashSequence
+    hash_sequence = dsha256(sequences)
+
+    # Calculate hashOutputs
+    outputs_data = b''.join(outputs)
+    hash_outputs = dsha256(outputs_data)
+
+    return hash_prevouts, hash_sequence, hash_outputs 

@@ -43,32 +43,35 @@ def sign(private_key: bytes, commitment: bytes) -> bytes:
             
     return signature_with_sighash
 
-# TODO: Implement this function
 def get_pub_from_priv(priv: bytes) -> bytes:
-    """
-    Derive the secp256k1 compressed public key from a private key.
-    
-    Args:
-        priv: 32-byte private key
-        
-    Returns:
-        33-byte compressed public key
-    """
-    # Your implementation here
-    pass
+    """Derive the secp256k1 compressed public key from a private key."""
+    sk = SigningKey.from_string(priv, curve=SECP256k1)
+    vk = sk.verifying_key
+    compressed_pubkey = vk.to_string("compressed")
+    return compressed_pubkey
 
-# TODO: Implement this function
 def get_p2wpkh_witness(priv: bytes, msg: bytes) -> bytes:
     """
     Create witness stack for P2WPKH input with format:
     [num_items][sig_len][signature][pubkey_len][pubkey]
-    
-    Args:
-        priv: 32-byte private key
-        msg: 32-byte message to sign
-        
-    Returns:
-        Serialized witness stack
     """
-    # Your implementation here
-    pass 
+    # Get signature with sighash byte
+    signature_with_sighash = sign(priv, msg)
+    
+    # Get compressed public key
+    compressed_public_key = get_pub_from_priv(priv)
+    
+    # Number of witness items (always 2 for P2WPKH)
+    num_witness_items = bytes([2])
+    
+    # Serialize signature with its length
+    sig_len = bytes([len(signature_with_sighash)])
+    serialized_sig = sig_len + signature_with_sighash
+    
+    # Serialize public key with its length
+    pk_len = bytes([len(compressed_public_key)])
+    serialized_pk = pk_len + compressed_public_key
+    
+    # Combine all parts
+    serialized_witness = num_witness_items + serialized_sig + serialized_pk
+    return serialized_witness 
