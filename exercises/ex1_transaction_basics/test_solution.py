@@ -22,7 +22,7 @@ class TestTransactionBasics(unittest.TestCase):
         self.assertEqual(input1, expected, "Input serialization incorrect")
         
         # Create input with custom script_sig and sequence
-        script_sig = bytes.fromhex("483045022100...")  # Shortened for brevity
+        script_sig = bytes.fromhex("48304502210084d96818b9825f4f891562458e0a943e5a2eac147e32698ba4951ea8f1c79ee7022060fbda12c87682ac3a58f1f0e7eee2b5b973df1a7bc99c903f19c0b0e693a1f701")
         input2 = create_input(
             txid="8ac60eb9575db5b2d987e29f301b5b819ea83a5c6579d282d189cc04b8e151ef",
             vout=1,

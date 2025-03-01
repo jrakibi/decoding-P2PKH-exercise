@@ -6,13 +6,17 @@ class TestCompleteTransaction(unittest.TestCase):
     def test_assemble_transaction(self):
         """Test assembling a complete SegWit transaction"""
         # Create mock inputs (simplified for testing)
+        # First input with its signature script
         input1 = bytes.fromhex(
             "fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f"  # txid (little-endian)
             "00000000"  # vout
-            "00"        # script length (empty script)
+            "49"        # script length (73 bytes)
+            "4830450221008b9d1dc26ba6a9cb62127b02742fa9d754cd3bebf337f7a55d114c8e5cdd30be"
+            "022040529b194ba3f9281a99f2b1c0a19c0489bc22ede944ccf4ecbab4cc618ef3ed01"
             "eeffffff"  # sequence
         )
         
+        # Second input (P2WPKH)
         input2 = bytes.fromhex(
             "ef51e1b804cc89d182d279655c3aa89e815b1b309fe287d9b2b55d57b90ec68a"  # txid (little-endian)
             "01000000"  # vout
@@ -33,16 +37,16 @@ class TestCompleteTransaction(unittest.TestCase):
         
         # Create mock witness data
         witness1 = bytes.fromhex(
+            "00"  # Empty witness for first input
+        )
+        
+        witness2 = bytes.fromhex(
             "02"  # Number of witness items
             "47"  # Signature length (71 bytes)
             "304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a"
             "0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee01"
             "21"  # Public key length (33 bytes)
             "025476c2e83188368da1ff3e292e7acafcdb3566bb0ad253f62fc70f07aeee6357"
-        )
-        
-        witness2 = bytes.fromhex(
-            "00"  # Empty witness
         )
         
         # Assemble transaction
@@ -54,28 +58,65 @@ class TestCompleteTransaction(unittest.TestCase):
             locktime=0x11000000
         )
         
-        # Expected transaction from BIP143 example (with some modifications for our test)
+        # Expected transaction from BIP143 example
         expected = bytes.fromhex(
             "01000000" +  # version
             "0001" +      # marker & flag
             "02" +        # input count
             "fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f00000000" +
-            "00eeffffff" +
+            "494830450221008b9d1dc26ba6a9cb62127b02742fa9d754cd3bebf337f7a55d114c8e5cdd30be" +
+            "022040529b194ba3f9281a99f2b1c0a19c0489bc22ede944ccf4ecbab4cc618ef3ed01" +
+            "eeffffff" +
             "ef51e1b804cc89d182d279655c3aa89e815b1b309fe287d9b2b55d57b90ec68a01000000" +
             "00ffffffff" +
             "02" +        # output count
             "202cb206000000001976a9148280b37df378db99f66f85c95a783a76ac7a6d5988ac" +
             "9093510d000000001976a9143bde42dbee7e4dbe6a21b2d50ce2f0167faa815988ac" +
             # witness data
-            "02" +        # number of witness items for input 1
+            "00" +        # empty witness for input 1
+            "02" +        # number of witness items for input 2
             "47" +        # length of first witness item
             "304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a" +
             "0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee01" +
             "21" +        # length of second witness item
             "025476c2e83188368da1ff3e292e7acafcdb3566bb0ad253f62fc70f07aeee6357" +
-            "00" +        # empty witness for input 2
-            "00001100"    # locktime
+            "11000000"    # locktime
         )
+        
+        # Debug output to compare expected vs actual
+        print("\n=== TRANSACTION COMPARISON ===")
+        print(f"Expected length: {len(expected)} bytes")
+        print(f"Actual length: {len(tx)} bytes")
+        
+        # Compare byte by byte to find differences
+        min_len = min(len(expected), len(tx))
+        differences = []
+        
+        for i in range(min_len):
+            if expected[i] != tx[i]:
+                differences.append((i, expected[i], tx[i]))
+                
+        if differences:
+            print("\nDifferences found:")
+            for pos, exp_byte, act_byte in differences:
+                print(f"Position {pos}: Expected 0x{exp_byte:02x}, Got 0x{act_byte:02x}")
+                
+            # Show context around first difference
+            if differences:
+                first_diff = differences[0][0]
+                start = max(0, first_diff - 8)
+                end = min(min_len, first_diff + 8)
+                
+                print("\nContext around first difference:")
+                print(f"Expected: {expected[start:end].hex()}")
+                print(f"Actual:   {tx[start:end].hex()}")
+                print(f"          {'  ' * (first_diff - start)}^^")
+        
+        # Print full hex if needed
+        print("\nExpected hex:")
+        print(expected.hex())
+        print("\nActual hex:")
+        print(tx.hex())
         
         self.assertEqual(tx, expected, "Transaction does not match expected output")
         
