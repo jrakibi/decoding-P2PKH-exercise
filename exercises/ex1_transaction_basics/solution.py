@@ -48,12 +48,17 @@ def create_output(
     # Amount (8 bytes, little-endian)
     amount_bytes = int_to_little_endian(amount, 8)
     
+    # Script length
+    script_pubkey_length = varint(len(script_pubkey))
+    
     # Output structure:
     # 1. Amount (8 bytes)
-    # 2. ScriptPubKey with length prefix
+    # 2. Script length (varint)
+    # 3. ScriptPubKey
     output_bytes = (
         amount_bytes +          # value in satoshis
-        script_pubkey          # includes length prefix
+        script_pubkey_length +  # script length
+        script_pubkey           # actual script
     )
     
     return output_bytes
