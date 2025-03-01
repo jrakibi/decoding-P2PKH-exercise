@@ -1,50 +1,42 @@
-# Bitcoin Transaction Exercise
+# Programming Exercise Autograding
 
-In this exercise, you will implement various components of Bitcoin transaction creation and signing, following the BIP143 specification for SegWit transactions.
+This repository contains programming exercises that will be automatically graded using GitHub Classroom's autograding feature.
+
+## How It Works
+
+1. Students fork this repository through GitHub Classroom
+2. Students complete the exercises in their fork
+3. When students push their code, GitHub Actions will automatically run tests to verify the solution
+4. Students receive immediate feedback on their submission
+
+## Exercise Structure
+
+Each exercise is contained in its own directory with the following structure:
+- `exercise.md` - Instructions for the exercise
+- `template.py` - Starter code that students will modify
+- `test_solution.py` - Tests that will be run against the student's solution
+
+## Available Exercises
+
+1. **Function Implementation** - Complete a function according to specifications
+2. **Algorithm Challenge** - Implement an algorithm to solve a specific problem
+3. **Debugging Exercise** - Fix bugs in existing code
+
+## For Students
+
+To complete these exercises:
+1. Read the instructions in the exercise.md file
+2. Modify the template.py file according to the instructions
+3. Commit and push your changes
+4. Check the "Actions" tab in your GitHub repository to see if your solution passes the tests
+
+## For Instructors
+
+To add new exercises:
+1. Create a new directory for your exercise
+2. Add the exercise files (instructions, template, tests)
+3. Update the GitHub Actions workflow to include your new tests
 
 ## Setup
 
-1. Fork this repository
-2. Clone your fork
-3. Implement the required functions in `solution.py`
-4. Push your changes to trigger the tests
-
-## Tasks
-
-### 1. Basic Transaction Structure
-Implement the following functions in `solution.py`:
-
-- `create_basic_tx(version, inputs, outputs, locktime, segwit=False)`
-- `create_input(txid, vout, script_sig, sequence)`
-- `create_output(amount, script_pubkey)`
-
-### 2. P2WPKH Script Handling
-Implement:
-- `get_p2wpkh_scriptcode(script_pubkey)`
-
-### 3. Transaction Digest Components
-Implement:
-- `get_transaction_digest(inputs, outputs)`
-
-### 4. BIP143 Commitment Hash
-Implement:
-- `get_commitment_hash(outpoint, scriptcode, value, outputs, all_inputs)`
-
-### 5. Transaction Signing
-Implement:
-- `sign(private_key, commitment)`
-- `get_p2wpkh_witness(priv, msg)`
-
-### 6. Final Transaction Assembly
-Implement:
-- `assemble_transaction(inputs, outputs, witnesses)`
-
-## Testing
-
-Your implementation will be tested against known test vectors from BIP143. The GitHub workflow will run automatically when you push your changes.
-
-## Requirements
-
-- All functions must handle bytes and integers as specified in the function signatures
-- Follow BIP143 specification for SegWit transaction signing
-- Ensure proper handling of little-endian encoding where required
+This repository uses GitHub Actions for autograding. The configuration can be found in the `.github/workflows` directory.
