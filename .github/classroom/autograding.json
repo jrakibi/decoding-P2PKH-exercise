@@ -1,14 +1,24 @@
 {
-  "tests": [
-    {
-      "name": "Exercise 1",
-      "setup": "",
-      "run": "cd exercises/exercise1 && pytest test_solution.py -v",
-      "input": "",
-      "output": "",
-      "comparison": "included",
-      "timeout": 10,
-      "points": 10
-    }
-  ]
-} 
+    "tests": [
+      {
+        "name": "Exercise 1",
+        "setup": "",
+        "run": "cd exercises/exercise1 && pytest test_solution.py -v",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 10,
+        "points": 10
+      },
+      {
+        "name": "Bitcoin Transaction Exercise",
+        "setup": "",
+        "run": "cd exercises/bitcoin_tx && pytest test_solution.py -v",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 10,
+        "points": 30
+      }
+    ]
+  }
