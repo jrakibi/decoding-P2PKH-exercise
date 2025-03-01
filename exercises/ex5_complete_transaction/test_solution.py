@@ -55,7 +55,7 @@ class TestCompleteTransaction(unittest.TestCase):
             inputs=[input1, input2],
             outputs=[output1, output2],
             witnesses=[witness1, witness2],
-            locktime=0x11000000
+            locktime=0x00000011
         )
         
         # Expected transaction from BIP143 example
