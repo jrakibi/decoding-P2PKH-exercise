@@ -1,44 +1,56 @@
-# Bitcoin Transaction Signing Exercise
+# Bitcoin Transaction Programming Exercises
 
-This exercise focuses on implementing key components of Bitcoin transaction creation and signing, with emphasis on SegWit transactions following the BIP143 standard.
-
-## Background
-
-Bitcoin transactions consist of inputs (previous transaction outputs being spent) and outputs (new UTXOs being created). Segwit (Segregated Witness) transactions separate signature data from transaction data to improve scalability.
-
-BIP143 introduced a new signature verification scheme for SegWit transactions that fixes transaction malleability issues and enables more efficient verification.
+This repository contains a series of progressive exercises to learn about Bitcoin transaction creation and signing, with a focus on SegWit transactions following the BIP143 standard.
 
 ## Getting Started
 
-1. Install the required dependency:
+1. Install the required dependencies:
 
 ```bash
-pip install ecdsa
+pip install -r requirements.txt
 ```
 
-2. Complete the implementation in `exercises/bitcoin_tx/template.py`
+2. Complete the implementation in each exercise's template.py file
 
-## Tasks
+## Exercise Structure
 
-Implement the following functions:
+The exercises are designed to build on each other, gradually introducing more complex concepts:
 
-1. `sign(private_key, commitment)`: Sign a transaction digest with a private key following Bitcoin's signature requirements
-   - Create a deterministic signature (RFC 6979)
-   - Ensure the signature uses low-S values (BIP62)
-   - Append the SIGHASH_ALL byte
+### Exercise 1: Transaction Basics
+Learn about the basic structure of Bitcoin transactions and implement functions to create transaction inputs and outputs.
 
-2. `get_p2wpkh_witness(priv, msg)`: Create a proper witness stack for a P2WPKH input
-   - Format: [num_items][sig_len][signature][pubkey_len][pubkey]
+### Exercise 2: Transaction Digests
+Learn how transaction digests are calculated for signing in SegWit transactions according to BIP143.
 
-3. `assemble_transaction(inputs, outputs, witnesses)`: Assemble the final SegWit transaction
-   - Include version, marker, flag, inputs, outputs, witness data, and locktime
+### Exercise 3: Signatures
+Implement a function to sign transaction digests according to Bitcoin's requirements, including deterministic signatures and low-S values.
 
-## Testing
+### Exercise 4: Witness Data
+Create witness data for P2WPKH (Pay-to-Witness-Public-Key-Hash) inputs.
 
-Your implementation will be tested against known test vectors from BIP143 to ensure compatibility with the Bitcoin protocol.
+### Exercise 5: Complete Transaction
+Assemble a complete SegWit transaction, bringing together all the components from the previous exercises.
 
-## Important Notes
+## Testing Your Implementation
 
-- Pay attention to byte ordering (little-endian vs big-endian)
-- The signature must follow strict DER encoding rules
-- For BIP62 compliance, if s > n/2, use n-s instead (where n is the curve order)
+Each exercise includes a test file that verifies your implementation against known test vectors from BIP143. To run the tests for an exercise:
+
+```bash
+cd exercises/ex1_transaction_basics
+pytest test_solution.py -v
+```
+
+## Important Concepts
+
+- **Little-Endian vs Big-Endian**: Bitcoin uses little-endian byte order for most values
+- **DER Encoding**: Bitcoin signatures must follow strict DER encoding rules
+- **Low-S Values**: For BIP62 compliance, if s > n/2, use n-s instead (where n is the curve order)
+- **SegWit**: Segregated Witness separates signature data from transaction data to improve scalability
+- **BIP143**: Introduced a new signature verification scheme for SegWit transactions that fixes transaction malleability issues
+
+## Resources
+
+- [Bitcoin Developer Reference](https://developer.bitcoin.org/reference/)
+- [BIP143 Specification](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki)
+- [Bitcoin Transaction Structure](https://en.bitcoin.it/wiki/Transaction)
+- [SegWit Benefits](https://bitcoincore.org/en/2016/01/26/segwit-benefits/)
