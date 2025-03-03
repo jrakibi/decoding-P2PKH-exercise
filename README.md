@@ -10,26 +10,50 @@ This repository contains a series of progressive exercises to learn about Bitcoi
 pip install -r requirements.txt
 ```
 
-2. Complete the implementation in each exercise's template.py file
 
-## Exercise Structure
+2. Work through each exercise sequentially, completing the implementation in each `template.py` file
 
-The exercises are designed to build on each other, gradually introducing more complex concepts:
+## Exercise Progression
 
 ### Exercise 1: Transaction Basics
-Learn about the basic structure of Bitcoin transactions and implement functions to create transaction inputs and outputs.
+**What you'll learn:** The fundamental structure of Bitcoin transactions
+- Create transaction inputs (references to previous transaction outputs)
+- Create transaction outputs (new spendable amounts with locking scripts)
+- Understand transaction version, locktime, and sequence numbers
+- Practice serializing transaction components to binary format
 
 ### Exercise 2: Transaction Digests
-Learn how transaction digests are calculated for signing in SegWit transactions according to BIP143.
+**What you'll learn:** How transaction data is prepared for signing in SegWit
+- Implement BIP143 digest algorithm for SegWit transactions
+- Understand how the digest algorithm prevents transaction malleability
+- Learn to handle different input types (P2WPKH, P2WSH)
+- Practice double-SHA256 hashing and byte manipulation
 
 ### Exercise 3: Signatures
-Implement a function to sign transaction digests according to Bitcoin's requirements, including deterministic signatures and low-S values.
+**What you'll learn:** Bitcoin's signature requirements and standards
+- Create ECDSA signatures using the secp256k1 curve
+- Implement deterministic signatures (RFC6979)
+- Apply Low-S value normalization for BIP62 compliance
+- Format signatures in DER encoding as required by Bitcoin
 
 ### Exercise 4: Witness Data
-Create witness data for P2WPKH (Pay-to-Witness-Public-Key-Hash) inputs.
+**What you'll learn:** SegWit's witness structure
+- Create witness stacks for P2WPKH inputs
+- Understand the witness serialization format
+- Learn how signatures and public keys are organized in witness data
+- See how witness data is separated from the transaction body
 
 ### Exercise 5: Complete Transaction
-Assemble a complete SegWit transaction, bringing together all the components from the previous exercises.
+**What you'll learn:** Putting it all together
+- Assemble a complete SegWit transaction from all components
+- Calculate transaction fees
+- Verify the final transaction structure
+- Create transactions that can be broadcast to the Bitcoin network
+
+## Testing Your Implementation
+
+Each exercise includes comprehensive tests to verify your code against known test vectors:
+
 
 ## Testing Your Implementation
 
