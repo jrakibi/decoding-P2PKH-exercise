@@ -1,5 +1,5 @@
 import unittest
-from template import dsha256, get_transaction_digest, create_input, create_output
+from templates.exercise2_template import dsha256, get_transaction_digest, create_input, create_output
 
 class TestTransactionDigests(unittest.TestCase):
     

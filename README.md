@@ -1,80 +1,44 @@
-# Bitcoin Transaction Programming Exercises
+# P2PKH Transaction Decoding Exercise
 
-This repository contains a series of progressive exercises to learn about Bitcoin transaction creation and signing, with a focus on SegWit transactions following the BIP143 standard.
+Learn Bitcoin transaction creation and signing by implementing P2PKH transaction decoding.
 
-## Getting Started
-
-1. Install the required dependencies:
-
+## Setup
 ```bash
 pip install -r requirements.txt
 ```
 
+## Exercises
 
-2. Work through each exercise sequentially, completing the implementation in each `template.py` file
+The repository contains 5 progressive exercises:
 
-## Exercise Progression
+1. **Transaction Basics**: Create and serialize transaction inputs and outputs
+2. **Transaction Digests**: Implement the BIP143 digest algorithm
+3. **Signatures**: Create ECDSA signatures with proper DER encoding
+4. **Witness Data**: Create witness stacks for SegWit transactions
+5. **Complete Transaction**: Build a complete SegWit transaction
 
-### Exercise 1: Transaction Basics
-**What you'll learn:** The fundamental structure of Bitcoin transactions
-- Create transaction inputs (references to previous transaction outputs)
-- Create transaction outputs (new spendable amounts with locking scripts)
-- Understand transaction version, locktime, and sequence numbers
-- Practice serializing transaction components to binary format
+Each exercise is in its own directory with:
+- `README.md`: Instructions specific to the exercise
+- `template.py`: Template file where you'll write your code
+- `test_exercise*.py`: Tests to verify your implementation
 
-### Exercise 2: Transaction Digests
-**What you'll learn:** How transaction data is prepared for signing in SegWit
-- Implement BIP143 digest algorithm for SegWit transactions
-- Understand how the digest algorithm prevents transaction malleability
-- Learn to handle different input types (P2WPKH, P2WSH)
-- Practice double-SHA256 hashing and byte manipulation
+## Working Through the Exercises
 
-### Exercise 3: Signatures
-**What you'll learn:** Bitcoin's signature requirements and standards
-- Create ECDSA signatures using the secp256k1 curve
-- Implement deterministic signatures (RFC6979)
-- Apply Low-S value normalization for BIP62 compliance
-- Format signatures in DER encoding as required by Bitcoin
+1. Start with Exercise 1 and work through them in order
+2. Read the exercise README for specific instructions
+3. Complete the template file with your implementation
+4. Run the tests to verify your solution
 
-### Exercise 4: Witness Data
-**What you'll learn:** SegWit's witness structure
-- Create witness stacks for P2WPKH inputs
-- Understand the witness serialization format
-- Learn how signatures and public keys are organized in witness data
-- See how witness data is separated from the transaction body
-
-### Exercise 5: Complete Transaction
-**What you'll learn:** Putting it all together
-- Assemble a complete SegWit transaction from all components
-- Calculate transaction fees
-- Verify the final transaction structure
-- Create transactions that can be broadcast to the Bitcoin network
-
-## Testing Your Implementation
-
-Each exercise includes comprehensive tests to verify your code against known test vectors:
-
-
-## Testing Your Implementation
-
-Each exercise includes a test file that verifies your implementation against known test vectors from BIP143. To run the tests for an exercise:
-
+## Running Tests
 ```bash
-cd exercises/ex1_transaction_basics
-pytest test_solution.py -v
+# Run tests for a specific exercise
+cd exercises/exercise1
+python -m pytest test_exercise1.py -v
+
+# Run all tests
+python run_all_tests.py
 ```
 
-## Important Concepts
-
-- **Little-Endian vs Big-Endian**: Bitcoin uses little-endian byte order for most values
-- **DER Encoding**: Bitcoin signatures must follow strict DER encoding rules
-- **Low-S Values**: For BIP62 compliance, if s > n/2, use n-s instead (where n is the curve order)
-- **SegWit**: Segregated Witness separates signature data from transaction data to improve scalability
-- **BIP143**: Introduced a new signature verification scheme for SegWit transactions that fixes transaction malleability issues
-
 ## Resources
-
 - [Bitcoin Developer Reference](https://developer.bitcoin.org/reference/)
 - [BIP143 Specification](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki)
-- [Bitcoin Transaction Structure](https://en.bitcoin.it/wiki/Transaction)
-- [SegWit Benefits](https://bitcoincore.org/en/2016/01/26/segwit-benefits/)

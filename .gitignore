@@ -1,0 +1,26 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Development environment
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Pytest
+.pytest_cache/
+
+# Solutions (hidden from Git)
+solutions/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/ 

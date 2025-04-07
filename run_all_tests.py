@@ -4,18 +4,23 @@ import subprocess
 import sys
 from pathlib import Path
 
-def run_tests_for_exercise(exercise_dir):
+def run_test_for_exercise(exercise_dir):
     """Run pytest for a specific exercise directory and return the result"""
     print(f"\n{'='*80}")
     print(f"Running tests for: {exercise_dir}")
     print(f"{'='*80}")
     
-    # Change to the exercise directory
-    os.chdir(exercise_dir)
+    # Get the test file name
+    test_files = list(exercise_dir.glob('test_*.py'))
+    if not test_files:
+        print(f"No test files found in {exercise_dir}")
+        return False
+    
+    test_file = test_files[0].name
     
     # Run pytest and capture the output
     result = subprocess.run(
-        ["pytest", "test_solution.py", "-v"],
+        ["python", "-m", "pytest", str(exercise_dir / test_file), "-v"],
         capture_output=True,
         text=True
     )
@@ -26,36 +31,26 @@ def run_tests_for_exercise(exercise_dir):
         print("Errors:")
         print(result.stderr)
     
-    # Return to the original directory
-    os.chdir(Path(exercise_dir).parent.parent)
-    
     return result.returncode == 0  # True if tests passed
 
 def main():
     # Get the root directory of the project
     root_dir = Path(__file__).parent.absolute()
     
-    # List of exercise directories from the autograding.json
-    exercises = [
-        "exercises/ex1_transaction_basics",
-        "exercises/ex2_transaction_digests",
-        "exercises/ex3_signatures",
-        "exercises/ex4_witness_data",
-        "exercises/ex5_complete_transaction"
-    ]
+    # List of exercise directories
+    exercises_dir = root_dir / "exercises"
+    exercises = sorted(list(exercises_dir.glob("exercise*")))
+    
+    if not exercises:
+        print("No exercise directories found!")
+        return 1
     
     # Store results for summary
     results = {}
     
     # Run tests for each exercise
     for exercise in exercises:
-        exercise_path = root_dir / exercise
-        if not exercise_path.exists():
-            print(f"Warning: Exercise directory {exercise} not found!")
-            results[exercise] = False
-            continue
-            
-        results[exercise] = run_tests_for_exercise(exercise_path)
+        results[exercise.name] = run_test_for_exercise(exercise)
     
     # Print summary
     print("\n" + "="*80)
