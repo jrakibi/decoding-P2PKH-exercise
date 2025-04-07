@@ -30,4 +30,4 @@ jobs:
           pip install pytest ecdsa
           
       - name: Autograding
-        uses: education/autograding@v2 
+        uses: education/autograding@v1 
