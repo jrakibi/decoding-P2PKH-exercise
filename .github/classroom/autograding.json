@@ -3,7 +3,7 @@
       {
         "name": "Exercise 1: Transaction Basics",
         "setup": "pip install ecdsa",
-        "run": "cd exercises/ex1_transaction_basics && pytest test_solution.py -v",
+        "run": "cd exercises/exercise1 && pytest test_exercise1.py -v",
         "input": "",
         "output": "",
         "comparison": "included",
@@ -13,7 +13,7 @@
       {
         "name": "Exercise 2: Transaction Digests",
         "setup": "pip install ecdsa",
-        "run": "cd exercises/ex2_transaction_digests && pytest test_solution.py -v",
+        "run": "cd exercises/exercise2 && pytest test_exercise2.py -v",
         "input": "",
         "output": "",
         "comparison": "included",
@@ -23,7 +23,7 @@
       {
         "name": "Exercise 3: Signatures",
         "setup": "pip install ecdsa",
-        "run": "cd exercises/ex3_signatures && pytest test_solution.py -v",
+        "run": "cd exercises/exercise3 && pytest test_exercise3.py -v",
         "input": "",
         "output": "",
         "comparison": "included",
@@ -33,7 +33,7 @@
       {
         "name": "Exercise 4: Witness Data",
         "setup": "pip install ecdsa",
-        "run": "cd exercises/ex4_witness_data && pytest test_solution.py -v",
+        "run": "cd exercises/exercise4 && pytest test_exercise4.py -v",
         "input": "",
         "output": "",
         "comparison": "included",
@@ -43,7 +43,7 @@
       {
         "name": "Exercise 5: Complete Transaction",
         "setup": "pip install ecdsa",
-        "run": "cd exercises/ex5_complete_transaction && pytest test_solution.py -v",
+        "run": "cd exercises/exercise5 && pytest test_exercise5.py -v",
         "input": "",
         "output": "",
         "comparison": "included",
