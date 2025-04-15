@@ -29,20 +29,21 @@ class TestTransactionDigests(unittest.TestCase):
         
         input2 = create_input(
             txid="8ac60eb9575db5b2d987e29f301b5b819ea83a5c6579d282d189cc04b8e151ef",
-            vout=1
+            vout=1,
+            sequence=b'\xff\xff\xff\xff'
         )
         
         # Create outpoint being spent (first 36 bytes of input)
-        outpoint = input1[:36]
+        outpoint = input2[:36]
         
         # Create script code (P2PKH)
         script_code = bytes.fromhex("1976a9141d0f172a0ecb48aee1be1f2687d2963ae33f71a188ac")
         
         # Amount being spent (in satoshis)
-        amount = (6*100000000 + 32454049).to_bytes(8, 'little')
+        amount = (6*100000000).to_bytes(8, 'little')
         
         # Sequence number
-        sequence = b'\xee\xff\xff\xff'
+        sequence = input2[-4:]
         
         # Create outputs
         output1 = create_output(
@@ -88,8 +89,11 @@ class TestTransactionDigests(unittest.TestCase):
         expected_digest = bytes.fromhex(
             'c37af31116d1b27caf68aae9e3ac82f1477929014d5b917657d0eb49478cb670'
         )
+
+        print('digest: ', digest.hex())
+        print('expected: ', expected_digest.hex())
         
         self.assertEqual(digest, expected_digest, "Transaction digest incorrect")
 
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()
